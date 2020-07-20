@@ -30,3 +30,6 @@ setopt COMPLETE_ALIASES
 
 path+=('/home/luca/Dropbox/Personal/configs/scripts')
 export PATH
+
+export VISUAL=vim
+export EDITOR="$VISUAL"
