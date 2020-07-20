@@ -33,3 +33,5 @@ export PATH
 
 export VISUAL=vim
 export EDITOR="$VISUAL"
+
+bindkey "^R" history-incremental-pattern-search-backward
