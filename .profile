@@ -26,4 +26,4 @@ if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
 
-PATH="$(yarn global bin):$PATH"
+# PATH="$(yarn global bin):$PATH"
