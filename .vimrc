@@ -1,13 +1,11 @@
-let data_dir = '~/.vim'
-if empty(glob(data_dir . '/autoload/plug.vim'))
-    silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
+set number
+set showmatch
 
-call plug#begin('~/.vim/plugged')
+set incsearch
+set hlsearch
 
-Plug 'dracula/vim', { 'as': 'dracula' }
+syntax on
 
-call plug#end()
-
-colorscheme dracula
+set tabstop=4
+set softtabstop=4
+set expandtab

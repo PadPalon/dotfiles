@@ -1,3 +1,3 @@
-path+=('/home/luca/.cfg/scripts')
-# path+=$(yarn global bin)
+path+=($HOME'/.dotfiles/scripts')
+path+=($HOME'/bin')
 export PATH
