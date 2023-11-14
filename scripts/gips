@@ -1,0 +1,4 @@
+#!/bin/bash
+git stash save pull backup
+git pull --rebase
+git stash pop

@@ -1,4 +1,4 @@
 #!/bin/bash
-git stash save everything
-git pull --rebase
+git stash save rebase backup
+git rebase -i HEAD~$1
 git stash pop
