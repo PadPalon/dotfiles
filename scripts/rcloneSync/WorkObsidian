@@ -1,0 +1,2 @@
+#!/bin/bash
+rclone bisync Local:/home/luca/Dropbox/Personal/obsidian/Work Proton:/obsidian/Work
