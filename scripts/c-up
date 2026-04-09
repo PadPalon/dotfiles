@@ -2,8 +2,9 @@
 
 import argparse
 import subprocess
+import re
 
-target_issue = 'TOCDEV-8338'
+target_issue = 'TOCDEV-11827'
 
 parser = argparse.ArgumentParser()
 parser.add_argument('package_names', nargs='+')
@@ -13,16 +14,21 @@ parser.add_argument('-nc', '--no-commit', action='store_true')
 parser.add_argument('-sep', '--separate-commits', action='store_true')
 args = parser.parse_args()
 
+version_regex = re.compile(".*Version: (.*)")
+
+def get_version(package_name):
+    version_result = subprocess.run(['yarn', 'info', package_name], capture_output = True, text = True)
+    return next(filter(None, map(version_regex.match, version_result.stdout.splitlines()))).group(1)
+
 def single_commit():
     if args.workspace is None:
-        subprocess.run(['yarn', 'add', '-W'] + args.package_names)
+        subprocess.run(['yarn', 'add'] + args.package_names)
     else:
         subprocess.run(['yarn', 'workspace', args.workspace, 'add'] + args.package_names)
 
     if not args.no_commit:
         if args.custom_message is None:
-            version_result = subprocess.run(['yarn', 'info', args.package_names[0], 'version'], capture_output = True, text = True)
-            version = version_result.stdout.splitlines()[1]
+            version = get_version(package_name)
             message = f'chore: upgrade {args.package_names[0]} to {version}'
         else:
             message = f'chore: {args.custom_message}'
@@ -31,14 +37,13 @@ def single_commit():
 
 def separate_commits():
     for package_name in args.package_names:
-        subprocess.run(['yarn', 'add', '-W', package_name])
-        version_result = subprocess.run(['yarn', 'info', package_name, 'version'], capture_output = True, text = True)
-        version = version_result.stdout.splitlines()[1]
+        subprocess.run(['yarn', 'add', package_name])
+        version = get_version(package_name)
         message = f'chore: upgrade {package_name} to {version}'
         subprocess.run(['git', 'add', '*'])
         subprocess.run(['git', 'commit', '-m', message, '-m', f'Refs: {target_issue}'])
 
 if args.separate_commits:
-    separate_commits()
+   separate_commits()
 else:
-    single_commit()
+   single_commit()
