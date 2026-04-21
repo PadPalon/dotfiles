@@ -1,0 +1,24 @@
+#!/usr/bin/env python3
+
+import argparse
+import subprocess
+import re
+
+parser = argparse.ArgumentParser()
+parser.add_argument('message')
+parser.add_argument('version', nargs='?', default='master')
+parser.add_argument('-poc', '--prototype', action='store_true')
+args = parser.parse_args()
+
+prefix = 'poc' if args.prototype else 'pr'
+if args.version == 'master':
+    parts = ['git', 'checkout', '-B',  prefix+'/'+args.message, 'origin/master']
+else:
+    if args.version.startswith('3.'):
+        version = '3'+args.version[2:]
+    elif args.version.startswith('3'):
+        version = args.version
+    else:
+        version = '3'+args.version
+    parts = ['git', 'checkout', '-B',  prefix+'/'+version+'/'+args.message, 'origin/nice-releases/'+version]
+subprocess.run(parts)
