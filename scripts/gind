@@ -1,0 +1,14 @@
+#!/usr/bin/env python3
+
+import argparse
+import subprocess
+import re
+
+parser = argparse.ArgumentParser()
+parser.add_argument('message')
+parser.add_argument('-poc', '--prototype', action='store_true')
+args = parser.parse_args()
+
+prefix = 'poc' if args.prototype else 'pr'
+parts = ['git', 'checkout', '-B',  prefix+'/'+args.message, 'origin/master']
+subprocess.run(parts)
